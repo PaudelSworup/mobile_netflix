@@ -6,4 +6,5 @@ export default {
   MAIN: 'MainScreen',
   MOVIE: 'Movie',
   DETAIL: 'MovieDetail',
+  NOTIFICATION: 'NotificationScreen',
 };
