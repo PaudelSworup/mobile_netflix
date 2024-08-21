@@ -30,12 +30,12 @@ const SkeletonLoading = () => {
   return (
     <View className="justify-between py-3 flex-row">
       {/* User icon placeholder */}
-      <View style={{marginRight: 10}}>
+      <View style={{marginRight: 10, padding: 10}}>
         <Animated.View
           style={{
-            width: 50,
-            height: 50,
-            borderRadius: 25,
+            width: 100,
+            height: 100,
+            borderRadius: 50,
             backgroundColor: '#cccccc',
             marginBottom: 10,
             opacity: opacityValue,
@@ -44,7 +44,7 @@ const SkeletonLoading = () => {
       </View>
 
       {/* Text placeholders */}
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, marginTop: 30}}>
         <Animated.View
           style={{
             width: '70%',

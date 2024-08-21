@@ -40,9 +40,6 @@ const MovieNotification = () => {
         </Button>
       </View>
     </SafeAreaView>
-    // <View>
-    //   <Text>MovieNotification</Text>
-    // </View>
   );
 };
 

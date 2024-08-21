@@ -41,14 +41,14 @@ const MovieBanner = () => {
   return (
     <View
       style={{
-        height: hp(30),
+        height: hp(35),
         borderRadius: 20,
         overflow: 'hidden',
         position: 'relative',
       }}>
       {play ? (
         <YoutubePlayer
-          height={230}
+          height={hp(35)}
           play={true}
           videoId={videos?.trailer?.youtube_video_id}
         />

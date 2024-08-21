@@ -43,16 +43,18 @@ const Row: React.FC<{title: string; movies?: any}> = ({title, movies}) => {
               : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8JrNcJV0PaRPCm3vBRGmxdAE1B993db_Xig',
           }}
           // style={{height: 160, width: 250, borderRadius: 20}}
-          style={{height: hp(20), width: wp(60), borderRadius: 20}}
+          style={{height: hp(25), width: wp(65), borderRadius: 20}}
+          blurRadius={2}
         />
       </TouchableOpacity>
       <View
         className="absolute bottom-0 h-[70px] p-2  w-full "
         style={{
-          backgroundColor: 'rgba(255,255,255,0.2)',
+          backgroundColor: 'rgba(0,0,0,0.59)',
           borderBottomLeftRadius: 20,
+          borderBottomRightRadius: 20,
         }}>
-        <Text className="text-white font-bold text-base tracking-wide ">
+        <Text className="text-white/70 font-bold text-base tracking-wide ">
           {overFlow(item?.title, 25)}
         </Text>
         <View className="flex-row items-center space-x-1">
@@ -67,17 +69,23 @@ const Row: React.FC<{title: string; movies?: any}> = ({title, movies}) => {
 
   return (
     <View className="mt-3">
-      <View className="flex-row  justify-between">
-        <Text className="text-lg font-bold text-white tracking-wider">
+      <View className="flex-row py-2 justify-between">
+        <Text
+          className="text-lg uppercase font-bold text-white tracking-wider"
+          style={{fontSize: hp(2)}}>
           {title}
         </Text>
-        <Text className="font-light tracking-tight text-sm text-white">
+        {/* <Text
+          className="font-light tracking-tight text-sm text-white"
+          style={{fontSize: hp(2)}}>
           See All
-        </Text>
+        </Text> */}
       </View>
-      {loading ? ( // Render skeleton if loading state
+      {Object.values(movies).every((movies: any) => movies.length === 0) ? (
         <Skeleton />
       ) : (
+        /* {loading ? ( // Render skeleton if loading state
+        <Skeleton /> */
         // Render movie items if data is loaded
         <FlatList
           horizontal

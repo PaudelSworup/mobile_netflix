@@ -119,7 +119,11 @@ const MovieDetail = () => {
   const handleBackPress = useCallback(() => {
     if (backPressedOnce) {
       // If back button is pressed twice within a certain time frame, navigate back
-      navigation.goBack();
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+      } else {
+        navigation.navigate(NavigationStrings.MOVIE); // Fallback to a different screen if no previous screen is available
+      }
       return true;
     }
 
@@ -158,7 +162,7 @@ const MovieDetail = () => {
           uri: `${IMAGE_URL}${item?.profile_path}`,
         }}
         className="rounded-full"
-        style={{height: hp(10), width: wp(20)}}
+        style={{height: 90, width: 90, borderRadius: 50}}
       />
       <View className="p-4">
         <Text className="text-[#cbc9c9]" style={{fontSize: hp(2)}}>
@@ -173,54 +177,13 @@ const MovieDetail = () => {
     </View>
   ));
 
-  //   const RecommendedItems = React.memo(({item}: any) => (
-  //     <View
-  //       className="relative"
-  //       style={{
-  //         borderRadius: 20,
-  //         marginRight: 10,
-  //       }}>
-  //       <TouchableOpacity
-  //         onPress={() =>
-  //           navigation.replace(NavigationStrings.DETAIL, {movieId: item?.id})
-  //         }>
-  //         <Image
-  //           source={{
-  //             uri: item
-  //               ? `${IMAGE_URL}/${item.backdrop_path}`
-  //               : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8JrNcJV0PaRPCm3vBRGmxdAE1B993db_Xig',
-  //           }}
-  //           // style={{height: 160, width: 250, borderRadius: 20}}
-  //           style={{height: hp(20), borderRadius: 10, marginTop: 10}}
-  //         />
-  //       </TouchableOpacity>
-  //       <View
-  //         className="absolute bottom-0 h-[70px] p-2  w-full "
-  //         style={{
-  //           backgroundColor: 'rgba(255,255,255,0.2)',
-  //           borderBottomLeftRadius: 20,
-  //         }}>
-  //         <Text className="text-white font-bold text-base tracking-wide ">
-  //           {overFlow(item?.title, 25)}
-  //         </Text>
-  //         <View className="flex-row items-center space-x-1">
-  //           <StarIcon size={22} color="yellow" />
-  //           <Text className="text-white text-base">
-  //             {item?.vote_average.toFixed(1)}
-  //           </Text>
-  //         </View>
-  //       </View>
-  //     </View>
-  //   ));
-
   const GridItem = ({item}: any) => {
     return (
-      <TouchableOpacity onPress={() => item.id} style={styles.container}>
-        {/* <Image
-          source={{uri: `${IMAGE_URL}/${item.imagePath}`}}
-          style={styles.image}
-        /> */}
-
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() =>
+          navigation.replace(NavigationStrings.DETAIL, {movieId: item?.id})
+        }>
         <Image
           source={{
             uri: item
@@ -265,20 +228,12 @@ const MovieDetail = () => {
       />
       {showVideo ? (
         <View className="relative bg-[#272728]" style={{height: hp(100)}}>
-          {/* {loading ? (
-                <ActivityIndicator
-                  className="absolute top-[40%] left-[50%]"
-                  size="large"
-                  animating={true}
-                  color="red"
-                />
-              ) : ( */}
           <View className="h-screen">
             <View className=" h-screen ">
               <StatusBar />
 
               <YoutubePlayer
-                height={250}
+                height={hp(40)}
                 play={playing}
                 videoId={videos?.trailer?.youtube_video_id}
                 onFullScreenChange={handleOrientationChange}
@@ -327,6 +282,8 @@ const MovieDetail = () => {
               <Image
                 source={{uri: `${IMAGE_URL}/${movies?.poster_path}`}}
                 style={{opacity: 0.7, height: hp(60)}}
+                resizeMode="stretch"
+                // className="object-contain"
               />
 
               <TouchableOpacity
@@ -367,7 +324,7 @@ const MovieDetail = () => {
               </Text>
             </View>
 
-            <View className="mt-1 p-2">
+            <View className="mt-1 p-3">
               <Text
                 className="text-[#cbc9c9] font-bold  tracking-widest"
                 style={{fontSize: hp(3)}}>
@@ -429,7 +386,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 150,
+    height: hp(25),
   },
   overlay: {
     position: 'absolute',
