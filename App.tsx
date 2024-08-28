@@ -5,6 +5,9 @@ import {
   notificationListner,
   requestUserPermission,
 } from './src/apis/pushNotification/notification';
+import {Provider} from 'react-redux';
+import {persistor, store} from './src/store/store';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const queryClient = new QueryClient();
 const App = () => {
@@ -13,9 +16,13 @@ const App = () => {
     notificationListner();
   }, []);
   return (
-    <QueryClientProvider client={queryClient}>
-      <Route />
-    </QueryClientProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <Route />
+        </QueryClientProvider>
+      </PersistGate>
+    </Provider>
   );
 };
 

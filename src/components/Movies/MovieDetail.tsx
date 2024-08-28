@@ -45,6 +45,7 @@ import {
 } from 'react-native-responsive-screen';
 import {IMAGE_URL} from '../../../config';
 import NavigationStrings from '../../Constants/NavigationStrings';
+import LottieView from 'lottie-react-native';
 
 type RootStackParamList = {
   movieDetailID: {movieId?: number};
@@ -165,12 +166,12 @@ const MovieDetail = () => {
         style={{height: 90, width: 90, borderRadius: 50}}
       />
       <View className="p-4">
-        <Text className="text-[#cbc9c9]" style={{fontSize: hp(2)}}>
+        <Text className="text-[#cbc9c9]/80" style={{fontSize: hp(1.4)}}>
           Actor
         </Text>
         <Text
-          className="text-[#cbc9c9]  font-bold tracking-wider"
-          style={{fontSize: hp(2.5)}}>
+          className="text-[#cbc9c9]/80  font-bold tracking-wider"
+          style={{fontSize: hp(1.89)}}>
           {item?.name}
         </Text>
       </View>
@@ -213,8 +214,14 @@ const MovieDetail = () => {
           bottom: 0,
           justifyContent: 'center',
           alignItems: 'center',
+          backgroundColor: '#111',
         }}>
-        <ActivityIndicator size="large" animating={true} color="#0000ff" />
+        <LottieView
+          autoPlay
+          style={{width: 200, height: 200, backgroundColor: '#111'}}
+          source={require('../../../assets/loading.json')}
+        />
+        {/* <ActivityIndicator size="large" animating={true} color="#0000ff" /> */}
       </View>
     );
   }
@@ -276,31 +283,35 @@ const MovieDetail = () => {
           {/* )} */}
         </View>
       ) : (
-        <ScrollView className="bg-[#272728]  h-full">
-          <View className="h-full">
-            <View className="relative" style={{height: hp(60)}}>
-              <Image
-                source={{uri: `${IMAGE_URL}/${movies?.poster_path}`}}
-                style={{opacity: 0.7, height: hp(60)}}
-                resizeMode="stretch"
-                // className="object-contain"
-              />
+        <ScrollView className="bg-[#272728] h-full">
+          {/* <View className="h-full"> */}
+          <View className="relative" style={{height: hp(60)}}>
+            <Image
+              source={{uri: `${IMAGE_URL}/${movies?.poster_path}`}}
+              style={{opacity: 0.7, height: hp(60)}}
+              resizeMode="stretch"
+              // className="object-contain"
+            />
 
-              <TouchableOpacity
-                onPress={() => {
-                  setShowVideo(true);
-                }} // Set showVideo state to true when button is clicked
-                style={{backgroundColor: 'rgba(0,0,0,0.3)'}}
-                className="rounded-l-full absolute bottom-36 p-2 right-0">
-                <View className="flex-row items-center space-x-1">
-                  <View className="bg-white rounded-full p-1">
-                    <PlayIcon size={22} color="red" />
-                  </View>
-                  <Text className="text-white">Watch Trailer</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setShowVideo(true);
+              }} // Set showVideo state to true when button is clicked
+              style={{backgroundColor: 'rgba(0,0,0,0.3)'}}
+              className="rounded-l-full absolute bottom-36 p-2 right-0">
+              <View className="flex-row items-center space-x-1">
+                <View className="bg-white rounded-full p-1">
+                  <PlayIcon size={22} color="red" />
                 </View>
-              </TouchableOpacity>
-            </View>
-
+                <Text
+                  className="text-white/50 tracking-wider"
+                  style={{fontSize: hp(2)}}>
+                  Watch Trailer
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View className="gap-4">
             <View className="flex-row items-center space-x-2 p-2 mt-1">
               <View className="flex-row space-x-1">
                 <StarIcon size={22} color="yellow" />
@@ -324,21 +335,27 @@ const MovieDetail = () => {
               </Text>
             </View>
 
-            <View className="mt-1 p-3">
-              <Text
-                className="text-[#cbc9c9] font-bold  tracking-widest"
-                style={{fontSize: hp(3)}}>
-                Story Line
-              </Text>
-              <Text
-                className="text-[#cbc9c9] font-light mt-2 tracking-wide text-sm text-justify leading-[22px]"
-                style={{fontSize: hp(1.69)}}>
-                {overFlow(movies?.overview, 350)}
-              </Text>
-              <View className="mt-1 p-2">
+            <View className="p-3 space-y-12">
+              <View>
                 <Text
-                  className="text-[#cbc9c9] font-bold  tracking-widest"
-                  style={{fontSize: hp(3)}}>
+                  className="text-[#cbc9c9]/80 font-bold  tracking-widest"
+                  style={{fontSize: hp(2.3)}}>
+                  Story Line
+                </Text>
+                <Text
+                  className="text-[#cbc9c9] font-extralight mt-2 tracking-widest text-sm text-justify leading-[30px]"
+                  style={{fontSize: hp(1.75)}}
+                  numberOfLines={5}
+                  ellipsizeMode="tail">
+                  {movies?.overview}
+                  {/* {overFlow(movies?.overview, 350)} */}
+                </Text>
+              </View>
+
+              <View className="pt-2">
+                <Text
+                  className="text-[#cbc9c9]/80 font-bold  tracking-widest"
+                  style={{fontSize: hp(2.3)}}>
                   Star cast
                 </Text>
                 <FlatList
@@ -350,24 +367,25 @@ const MovieDetail = () => {
                 />
               </View>
             </View>
-            <View className="flex-1 justify-between">
-              <Snackbar
-                className="bg-[#cbc9c9]"
-                visible={snackbarVisible}
-                onDismiss={() => setSnackbarVisible(false)}
-                duration={1000} // 1 seconds
-                action={{
-                  label: 'go back',
-                  textColor: 'black',
-                  onPress: () => {
-                    setSnackbarVisible(false);
-                    handleBackPress(); // Call handleBackPress again to navigate back
-                  },
-                }}>
-                <Text className="text-black">Press again to go back</Text>
-              </Snackbar>
-            </View>
           </View>
+          <View className="flex-1 justify-between">
+            <Snackbar
+              className="bg-[#cbc9c9]"
+              visible={snackbarVisible}
+              onDismiss={() => setSnackbarVisible(false)}
+              duration={1000} // 1 seconds
+              action={{
+                label: 'go back',
+                textColor: 'black',
+                onPress: () => {
+                  setSnackbarVisible(false);
+                  handleBackPress(); // Call handleBackPress again to navigate back
+                },
+              }}>
+              <Text className="text-black">Press again to go back</Text>
+            </Snackbar>
+          </View>
+          {/* </View> */}
         </ScrollView>
       )}
     </SafeAreaView>

@@ -7,4 +7,5 @@ export default {
   MOVIE: 'Movie',
   DETAIL: 'MovieDetail',
   NOTIFICATION: 'NotificationScreen',
+  LOADING: 'netflixloading',
 };

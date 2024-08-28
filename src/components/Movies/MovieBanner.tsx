@@ -1,7 +1,7 @@
 import {View, Text, ImageBackground, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {IMAGE_URL} from '../../../config';
-import {PlayIcon, XMarkIcon} from 'react-native-heroicons/solid';
+import {PlayIcon, StarIcon, XMarkIcon} from 'react-native-heroicons/solid';
 import {useQuery} from 'react-query';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -17,7 +17,9 @@ const MovieBanner = () => {
   const bannerMovies = useQuery(['trending'], async () => trending_movies(), {
     onSettled: data => {
       if (data?.movies.length) {
-        setBanner(data.movies[Math.floor(Math.random() * data.movies.length)]);
+        const randomBanner =
+          data.movies[Math.floor(Math.random() * data.movies.length)];
+        setBanner(randomBanner);
       }
     },
   });
@@ -34,7 +36,7 @@ const MovieBanner = () => {
 
   // Toggle play state
   const setBannerVideo = () => {
-    setPlay(!play);
+    setPlay(prevPlay => !prevPlay);
   };
 
   // Render the banner
@@ -72,7 +74,7 @@ const MovieBanner = () => {
               {banner?.title || banner?.original_title || banner?.name}
             </Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              {/* <StarIcon size={25} color="yellow" /> */}
+              <StarIcon size={25} color="yellow" />
               <Text style={{color: 'white', fontSize: 12}}>
                 {banner?.vote_average.toFixed(1)}
               </Text>

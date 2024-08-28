@@ -109,7 +109,7 @@ const Movie = () => {
             </View>
 
             {Object.entries(moviesData).map(([title, movies]) => {
-              console.log('Title:', title);
+              // console.log('Title:', title);
               // console.log('Movies:', movies);
 
               return <Row key={title} title={title} movies={movies} />;

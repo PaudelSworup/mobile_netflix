@@ -1,4 +1,6 @@
-let BASE_URL: string = 'http://192.168.1.67:8000/api';
+// let BASE_URL: string = 'http://192.168.1.67:8000/api';
+// 192.168.31.20
+let BASE_URL: string = 'http://192.168.31.20:8000/api';
 
 export const upcoming_movies = async () => {
   const response = await fetch(`${BASE_URL}/upcoming`);
