@@ -21,9 +21,11 @@ import {
 } from '../../apis/api';
 import SkeletonLoading from '../../utils/SkeletonLoading';
 import {Searchbar} from 'react-native-paper';
+import {useAppSelector} from '../../store/store';
 
 const Movie = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const {userInfo} = useAppSelector(state => state.auth);
   const scrollY = useRef(new Animated.Value(0)).current;
 
   //fetching the list of movies
@@ -73,7 +75,7 @@ const Movie = () => {
             className="flex-row justify-between bg-black py-3 px-2">
             <View>
               <Text className="text-[20px] tracking-wider text-white font-bold">
-                Hello Sworup
+                Hello {userInfo?.username}
               </Text>
               <Text className="font-light text-white tracking-tight">
                 What to Watch?
@@ -122,35 +124,3 @@ const Movie = () => {
 };
 
 export default Movie;
-
-{
-  /* <Row title="Upcoming" movies={upcoming} />
-            <Row title="Sci-Fi" movies={scifi} />
-
-            <Row title="Horror" movies={horror} />
-
-            <Row title="Comedy" movies={comedy} />
-
-            <Row title="Animation" movies={romance} /> */
-}
-
-//fetching the list of movies
-// const movies = useQuery(['upcoming'], async () => upcoming_movies(), {
-//   onSettled: data => setUpcoming(data?.movies),
-// });
-
-// const scifiMovies = useQuery(['scifi'], async () => scifi_movies(), {
-//   onSettled: data => setScifi(data?.movies),
-// });
-
-// const comedyMovies = useQuery(['comedy'], async () => comedy_movies(), {
-//   onSettled: data => setComedy(data?.movies),
-// });
-
-// const horrorMovies = useQuery(['horror'], async () => horror_movies(), {
-//   onSettled: data => setHorror(data?.movies),
-// });
-
-// const romanceMovies = useQuery(['romance'], async () => romance_movies(), {
-//   onSettled: data => setRomance(data?.movies),
-// });

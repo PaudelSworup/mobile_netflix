@@ -4,16 +4,23 @@ import LottieView from 'lottie-react-native';
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import NavigationStrings from '../../Constants/NavigationStrings';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useAppSelector} from '../../store/store';
 
 const Netflix = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
+  const {token, userInfo} = useAppSelector(state => state.auth);
+
   useEffect(() => {
     const timeout = setTimeout(() => {
-      navigation.replace(NavigationStrings.MOVIE); // Replace to avoid going back to the loading screen
-    }, 5000); // 6 seconds delay
+      if (userInfo && token) {
+        navigation.navigate(NavigationStrings.MOVIE);
+      } else {
+        navigation.navigate(NavigationStrings.LOGIN);
+      }
+    }, 5000);
 
-    // Clean up the timeout if the component unmounts
+    // Clear timeout on component unmount
     return () => clearTimeout(timeout);
   }, [navigation]);
   return (

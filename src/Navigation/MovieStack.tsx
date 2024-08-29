@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 const MovieStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName={NavigationStrings.LOGIN}
+      initialRouteName={NavigationStrings.LOADING}
       screenOptions={{headerShown: false}}>
       <Stack.Screen name={NavigationStrings.REGISTER} component={SignUp} />
       <Stack.Screen name={NavigationStrings.LOGIN} component={SignIn} />

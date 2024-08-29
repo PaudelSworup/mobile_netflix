@@ -255,7 +255,7 @@ const MovieDetail = () => {
 
               <FlatList
                 data={recommended}
-                keyExtractor={item => item.id.toString()}
+                keyExtractor={item => item.id.toString() + new Date()}
                 renderItem={({item}) => <GridItem item={item} />}
                 numColumns={2} // Number of columns in the grid
                 contentContainerStyle={{padding: 5}}
