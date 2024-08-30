@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
-import {Alert} from 'react-native';
+import {Alert, Platform, PermissionsAndroid} from 'react-native';
+import {navigate} from './NavigationService';
+import NavigationStrings from '../../Constants/NavigationStrings';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -22,15 +24,9 @@ export async function notificationListner() {
   messaging().onMessage(async (remoteMessage: any) => {
     console.log('inside app foreground state', remoteMessage.notification);
     // Show alert when the notification is received in the foreground
-
-    return Alert.alert(
-      'New Notification',
-      remoteMessage.notification?.body,
-      [{text: 'OK'}],
-      {
-        cancelable: true,
-      },
-    );
+    navigate(NavigationStrings.NOTIFICATION, {
+      title: remoteMessage?.notification.body,
+    });
   });
 }
 
@@ -48,3 +44,13 @@ async function getFCMToken() {
     }
   } catch (err) {}
 }
+
+export const checkApplicationPermission = async () => {
+  if (Platform.OS === 'android') {
+    try {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
+    } catch (error) {}
+  }
+};

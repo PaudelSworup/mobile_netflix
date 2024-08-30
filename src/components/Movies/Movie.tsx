@@ -7,7 +7,6 @@ import {
   Animated,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-// import {Searchbar} from 'react-native-paper';
 import Row from './Row';
 
 import {useQuery} from 'react-query';
@@ -28,6 +27,11 @@ const Movie = () => {
   const {userInfo} = useAppSelector(state => state.auth);
   const scrollY = useRef(new Animated.Value(0)).current;
 
+  //utility func to shuffle the list of movies
+  const shuffleArray = (array: any) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
   //fetching the list of movies
   const [moviesData, setMoviesData] = useState({
     upcoming: [],
@@ -40,7 +44,9 @@ const Movie = () => {
   const fetchMovies = (key: any, apiCall: any) =>
     useQuery(key, apiCall, {
       onSettled: (data: any) => {
-        setMoviesData(prev => ({...prev, [key]: data?.movies}));
+        const shuffledMovies = shuffleArray(data?.movies || []);
+        // setMoviesData(prev => ({...prev, [key]: data?.movies}));
+        setMoviesData(prev => ({...prev, [key]: shuffledMovies}));
       },
     });
 

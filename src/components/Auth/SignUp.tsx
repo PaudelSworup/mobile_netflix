@@ -15,8 +15,10 @@ import {signUp} from '../../apis/api';
 import {navigate} from '../../apis/pushNotification/NavigationService';
 import NavigationStrings from '../../Constants/NavigationStrings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useToast} from 'react-native-toast-notifications';
 
 const SignUp = () => {
+  const toast = useToast();
   const [form, setForm] = useState({
     username: '',
     email: '',
@@ -30,6 +32,19 @@ const SignUp = () => {
   const mutation = useMutation(signUp, {
     onSuccess: data => {
       console.log('Sign-up successful:', data);
+      if (data.success === true) {
+        toast.show(data?.message, {
+          type: 'custom',
+          duration: 4000,
+          placement: 'bottom',
+        });
+      } else {
+        toast.show(data?.error, {
+          type: 'danger',
+          duration: 4000,
+          placement: 'bottom',
+        });
+      }
     },
     onError: error => {
       console.error('Error during sign-up:', error);

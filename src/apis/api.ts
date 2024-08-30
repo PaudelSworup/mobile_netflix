@@ -1,5 +1,4 @@
-let BASE_URL: string = 'http://192.168.1.67:8000/api';
-// 192.168.31.20
+let BASE_URL: string = 'https://movies-backend-six.vercel.app/api';
 // let BASE_URL: string = 'http://192.168.31.20:8000/api';
 
 //list of movies of different genres
