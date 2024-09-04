@@ -10,6 +10,7 @@ import {
   FlatList,
   SafeAreaView,
   StyleSheet,
+  useWindowDimensions,
 } from 'react-native';
 import React, {useCallback, useState} from 'react';
 import {
@@ -51,6 +52,10 @@ type RootStackParamList = {
   movieDetailID: {movieId?: number};
 };
 const MovieDetail = () => {
+  const {height, width} = useWindowDimensions();
+
+  const orientation = width > height ? 'landscape' : 'portrait';
+  console.log(orientation);
   const [fullScreen, setFullScreen] = useState<boolean>(false);
   const [movies, setMovies] = useState<any>();
   const [showVideo, setShowVideo] = useState(false);
@@ -160,7 +165,11 @@ const MovieDetail = () => {
       <Image
         source={{
           // uri: 'https://marketplace.canva.com/EAFltPVX5QA/1/0/800w/canva-cute-cartoon-anime-girl-avatar-D4brQth3b2I.jpg',
-          uri: `${IMAGE_URL}${item?.profile_path}`,
+          // uri: `${IMAGE_URL}${item?.profile_path}`,
+          uri:
+            item?.profile_path != null
+              ? `${IMAGE_URL}${item?.profile_path}`
+              : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
         }}
         className="rounded-full"
         style={{height: 90, width: 90, borderRadius: 50}}
@@ -238,14 +247,23 @@ const MovieDetail = () => {
           <View className="h-screen">
             <View className=" h-screen ">
               <StatusBar />
-
-              <YoutubePlayer
-                height={hp(40)}
-                play={playing}
-                videoId={videos?.trailer?.youtube_video_id}
-                onFullScreenChange={handleOrientationChange}
-                onChangeState={onStateChange}
-              />
+              {orientation === 'landscape' ? (
+                <YoutubePlayer
+                  height={hp(80)}
+                  play={playing}
+                  videoId={videos?.trailer?.youtube_video_id}
+                  onFullScreenChange={handleOrientationChange}
+                  onChangeState={onStateChange}
+                />
+              ) : (
+                <YoutubePlayer
+                  height={hp(40)}
+                  play={playing}
+                  videoId={videos?.trailer?.youtube_video_id}
+                  onFullScreenChange={handleOrientationChange}
+                  onChangeState={onStateChange}
+                />
+              )}
 
               <Text
                 className="p-2 text-white font-bold"
@@ -283,92 +301,90 @@ const MovieDetail = () => {
           {/* )} */}
         </View>
       ) : (
-        <ScrollView className="bg-[#272728] h-full">
-          {/* <View className="h-full"> */}
-          <View className="relative" style={{height: hp(60)}}>
-            <Image
-              source={{uri: `${IMAGE_URL}/${movies?.poster_path}`}}
-              style={{opacity: 0.7, height: hp(60)}}
-              resizeMode="stretch"
-              // className="object-contain"
-            />
+        <ScrollView className="bg-[#272728]">
+          <View className="h-full justify-between">
+            <View className="relative" style={{height: hp(60)}}>
+              <Image
+                source={{uri: `${IMAGE_URL}/${movies?.poster_path}`}}
+                style={{opacity: 0.7, height: hp(60)}}
+                resizeMode="stretch"
+                // className="object-contain"
+              />
 
-            <TouchableOpacity
-              onPress={() => {
-                setShowVideo(true);
-              }} // Set showVideo state to true when button is clicked
-              style={{backgroundColor: 'rgba(0,0,0,0.3)'}}
-              className="rounded-l-full absolute bottom-36 p-2 right-0">
-              <View className="flex-row items-center space-x-1">
-                <View className="bg-white rounded-full p-1">
-                  <PlayIcon size={22} color="red" />
+              <TouchableOpacity
+                onPress={() => {
+                  setShowVideo(true);
+                }} // Set showVideo state to true when button is clicked
+                style={{backgroundColor: 'rgba(0,0,0,0.3)'}}
+                className="rounded-l-full absolute bottom-36 p-2 right-0">
+                <View className="flex-row items-center space-x-1">
+                  <View className="bg-white rounded-full p-1">
+                    <PlayIcon size={22} color="red" />
+                  </View>
+                  <Text
+                    className="text-white/50 tracking-wider"
+                    style={{fontSize: hp(2)}}>
+                    Watch Trailer
+                  </Text>
                 </View>
-                <Text
-                  className="text-white/50 tracking-wider"
-                  style={{fontSize: hp(2)}}>
-                  Watch Trailer
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View className="gap-4">
-            <View className="flex-row items-center space-x-2 p-2 mt-1">
-              <View className="flex-row space-x-1">
-                <StarIcon size={22} color="yellow" />
-                <Text className="text-white">8.3</Text>
-              </View>
-              <Button className="bg-[#E6AD18] rounded-md">
-                <Text className="text-[#343333]">IMDB 7.5</Text>
-              </Button>
+              </TouchableOpacity>
             </View>
+            <View className="gap-4">
+              <View className="flex-row items-center space-x-2 p-2 mt-1">
+                <View className="flex-row space-x-1">
+                  <StarIcon size={22} color="yellow" />
+                  <Text className="text-white">8.3</Text>
+                </View>
+                <Button className="bg-[#E6AD18] rounded-md">
+                  <Text className="text-[#343333]">IMDB 7.5</Text>
+                </Button>
+              </View>
 
-            <View className="p-2 flex-row space-x-5 mt-1">
-              <Text
-                className="text-[#cbc9c9] font-light"
-                style={{fontSize: hp(1.8)}}>
-                {names}
-              </Text>
-              <Text
-                className="text-[#cbc9c9] font-light"
-                style={{fontSize: hp(1.8)}}>
-                {movies?.runtime} m
-              </Text>
-            </View>
-
-            <View className="p-3 space-y-12">
-              <View>
+              <View className="p-2 flex-row space-x-5 mt-1">
                 <Text
-                  className="text-[#cbc9c9]/80 font-bold  tracking-widest"
-                  style={{fontSize: hp(2.3)}}>
-                  Story Line
+                  className="text-[#cbc9c9] font-light"
+                  style={{fontSize: hp(1.8)}}>
+                  {names}
                 </Text>
                 <Text
-                  className="text-[#cbc9c9] font-extralight mt-2 tracking-widest text-sm text-justify leading-[30px]"
-                  style={{fontSize: hp(1.75)}}
-                  numberOfLines={5}
-                  ellipsizeMode="tail">
-                  {movies?.overview}
-                  {/* {overFlow(movies?.overview, 350)} */}
+                  className="text-[#cbc9c9] font-light"
+                  style={{fontSize: hp(1.8)}}>
+                  {movies?.runtime} m
                 </Text>
               </View>
 
-              <View className="pt-2">
-                <Text
-                  className="text-[#cbc9c9]/80 font-bold  tracking-widest"
-                  style={{fontSize: hp(2.3)}}>
-                  Star cast
-                </Text>
-                <FlatList
-                  horizontal
-                  data={cast}
-                  keyExtractor={item => item.id.toString()}
-                  renderItem={({item}) => <CastItem item={item} />}
-                  contentContainerStyle={{marginTop: 5, marginLeft: 2}} // Adjust spacing as needed
-                />
+              <View className="p-3 space-y-12">
+                <View>
+                  <Text
+                    className="text-[#cbc9c9]/80 font-bold  tracking-widest"
+                    style={{fontSize: hp(2.3)}}>
+                    Story Line
+                  </Text>
+                  <Text
+                    className="text-[#cbc9c9] font-extralight mt-2 tracking-widest text-sm text-justify leading-[30px]"
+                    style={{fontSize: hp(1.75)}}
+                    numberOfLines={5}
+                    ellipsizeMode="tail">
+                    {movies?.overview}
+                  </Text>
+                </View>
+
+                <View className="pt-2">
+                  <Text
+                    className="text-[#cbc9c9]/80 font-bold  tracking-widest"
+                    style={{fontSize: hp(2.3)}}>
+                    Star cast
+                  </Text>
+                  <FlatList
+                    horizontal
+                    data={cast}
+                    keyExtractor={item => item.id.toString()}
+                    renderItem={({item}) => <CastItem item={item} />}
+                    contentContainerStyle={{marginTop: 5, marginLeft: 2}} // Adjust spacing as needed
+                  />
+                </View>
               </View>
             </View>
-          </View>
-          <View className="flex-1 justify-between">
             <Snackbar
               className="bg-[#cbc9c9]"
               visible={snackbarVisible}
@@ -385,7 +401,6 @@ const MovieDetail = () => {
               <Text className="text-black">Press again to go back</Text>
             </Snackbar>
           </View>
-          {/* </View> */}
         </ScrollView>
       )}
     </SafeAreaView>

@@ -52,7 +52,7 @@ const SignUp = () => {
   });
 
   const handleChange = (name: any, value: any) => {
-    setForm({...form, [name]: value});
+    setForm({...form, [name]: name === 'email' ? value.trim() : value});
   };
 
   const handleSignUp = async () => {

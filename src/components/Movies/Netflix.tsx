@@ -18,7 +18,7 @@ const Netflix = () => {
       } else {
         navigation.navigate(NavigationStrings.LOGIN);
       }
-    }, 5000);
+    }, 3000);
 
     // Clear timeout on component unmount
     return () => clearTimeout(timeout);
@@ -30,7 +30,7 @@ const Netflix = () => {
         <LottieView
           autoPlay
           style={{width: 200, height: 200}}
-          source={require('../../../assets/netflix.json')}
+          source={require('../../../assets/loadingMovie.json')}
         />
       </View>
     </SafeAreaView>

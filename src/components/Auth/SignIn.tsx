@@ -30,7 +30,7 @@ const SignIn = () => {
   const mutation = useMutation(signIn, {
     onSuccess: response => {
       console.log('Sign-in successful:', response);
-      if (response.success === true) {
+      if (response?.success === true) {
         dispatch(
           loginSuccess({
             token: response.token,
@@ -52,7 +52,7 @@ const SignIn = () => {
   });
 
   const handleChange = (name: any, value: any) =>
-    setForm({...form, [name]: value});
+    setForm({...form, [name]: name === 'email' ? value.trim() : value});
 
   const handleSignIn = () => {
     mutation.mutate({
