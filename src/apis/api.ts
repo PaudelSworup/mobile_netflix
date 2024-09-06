@@ -1,5 +1,5 @@
-// let BASE_URL: string = 'https://movies-backend-alpha.vercel.app/api';
-let BASE_URL: string = 'http://192.168.1.67:8000/api';
+let BASE_URL: string = 'https://movies-backend-alpha.vercel.app/api';
+// let BASE_URL: string = 'http://192.168.1.67:8000/api';
 
 //list of movies of different genres
 export const upcoming_movies = async (page: any) => {
