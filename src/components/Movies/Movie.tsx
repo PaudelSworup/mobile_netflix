@@ -19,6 +19,7 @@ import {
   romance_movies,
   scifi_movies,
   upcoming_movies,
+  western_movies,
 } from '../../apis/api';
 import SkeletonLoading from '../../utils/SkeletonLoading';
 import {Searchbar} from 'react-native-paper';
@@ -43,11 +44,13 @@ const Movie = () => {
     comedy: [],
     horror: [],
     romance: [],
+    western: [],
   });
 
   const fetchMovies = (key: any, apiCall: any) =>
-    useQuery(key, apiCall, {
+    useQuery(key, () => apiCall(1), {
       onSettled: (data: any) => {
+        // console.log(data?.movies);
         const shuffledMovies = shuffleArray(data?.movies || []);
         setMoviesData(prev => ({...prev, [key]: data?.movies}));
         // setMoviesData(prev => ({...prev, [key]: shuffledMovies}));
@@ -59,6 +62,7 @@ const Movie = () => {
   fetchMovies('comedy', comedy_movies);
   fetchMovies('horror', horror_movies);
   fetchMovies('romance', romance_movies);
+  fetchMovies('western', western_movies);
 
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 150],
@@ -69,7 +73,7 @@ const Movie = () => {
   const filteredMovies = Object.values(moviesData)
     .flat()
     .filter((movie: any) =>
-      movie.title.toLowerCase().includes(searchQuery.toLowerCase()),
+      movie?.title?.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
   const handleBackPress = useCallback(() => {
@@ -113,7 +117,10 @@ const Movie = () => {
       // backgroundColor="black"
       // barStyle="light-content"
       />
-      {Object.values(moviesData).every(movies => movies.length === 0) ? (
+      {moviesData &&
+      Object?.values(moviesData).every(
+        (movies: any) => movies?.length === 0,
+      ) ? (
         <SkeletonLoading />
       ) : (
         <>

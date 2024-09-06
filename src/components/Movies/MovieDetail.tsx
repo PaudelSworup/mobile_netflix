@@ -301,106 +301,109 @@ const MovieDetail = () => {
           {/* )} */}
         </View>
       ) : (
-        <ScrollView className="bg-[#272728]">
-          <View className="h-full justify-between">
-            <View className="relative" style={{height: hp(60)}}>
-              <Image
-                source={{uri: `${IMAGE_URL}/${movies?.poster_path}`}}
-                style={{opacity: 0.7, height: hp(60)}}
-                resizeMode="stretch"
-                // className="object-contain"
-              />
+        <ScrollView className="bg-[#272728] h-full">
+          {/* <View className="justify-between"> */}
+          <View className="relative" style={{height: hp(60)}}>
+            <Image
+              source={{uri: `${IMAGE_URL}/${movies?.poster_path}`}}
+              style={{opacity: 0.7, height: hp(60)}}
+              resizeMode="stretch"
+              // className="object-contain"
+            />
 
-              <TouchableOpacity
-                onPress={() => {
-                  setShowVideo(true);
-                }} // Set showVideo state to true when button is clicked
-                style={{backgroundColor: 'rgba(0,0,0,0.3)'}}
-                className="rounded-l-full absolute bottom-36 p-2 right-0">
-                <View className="flex-row items-center space-x-1">
-                  <View className="bg-white rounded-full p-1">
-                    <PlayIcon size={22} color="red" />
-                  </View>
-                  <Text
-                    className="text-white/50 tracking-wider"
-                    style={{fontSize: hp(2)}}>
-                    Watch Trailer
-                  </Text>
+            <TouchableOpacity
+              onPress={() => {
+                setShowVideo(true);
+              }} // Set showVideo state to true when button is clicked
+              style={{backgroundColor: 'rgba(0,0,0,0.3)'}}
+              className="rounded-l-full absolute bottom-36 p-2 right-0">
+              <View className="flex-row items-center space-x-1">
+                <View className="bg-white rounded-full p-1">
+                  <PlayIcon size={22} color="red" />
                 </View>
-              </TouchableOpacity>
-            </View>
-            <View className="gap-4">
-              <View className="flex-row items-center space-x-2 p-2 mt-1">
-                <View className="flex-row space-x-1">
-                  <StarIcon size={22} color="yellow" />
-                  <Text className="text-white">8.3</Text>
-                </View>
-                <Button className="bg-[#E6AD18] rounded-md">
-                  <Text className="text-[#343333]">IMDB 7.5</Text>
-                </Button>
-              </View>
-
-              <View className="p-2 flex-row space-x-5 mt-1">
                 <Text
-                  className="text-[#cbc9c9] font-light"
-                  style={{fontSize: hp(1.8)}}>
-                  {names}
-                </Text>
-                <Text
-                  className="text-[#cbc9c9] font-light"
-                  style={{fontSize: hp(1.8)}}>
-                  {movies?.runtime} m
+                  className="text-white/50 tracking-wider"
+                  style={{fontSize: hp(2)}}>
+                  Watch Trailer
                 </Text>
               </View>
-
-              <View className="p-3 space-y-12">
-                <View>
-                  <Text
-                    className="text-[#cbc9c9]/80 font-bold  tracking-widest"
-                    style={{fontSize: hp(2.3)}}>
-                    Story Line
-                  </Text>
-                  <Text
-                    className="text-[#cbc9c9] font-extralight mt-2 tracking-widest text-sm text-justify leading-[30px]"
-                    style={{fontSize: hp(1.75)}}
-                    numberOfLines={5}
-                    ellipsizeMode="tail">
-                    {movies?.overview}
-                  </Text>
-                </View>
-
-                <View className="pt-2">
-                  <Text
-                    className="text-[#cbc9c9]/80 font-bold  tracking-widest"
-                    style={{fontSize: hp(2.3)}}>
-                    Star cast
-                  </Text>
-                  <FlatList
-                    horizontal
-                    data={cast}
-                    keyExtractor={item => item.id.toString()}
-                    renderItem={({item}) => <CastItem item={item} />}
-                    contentContainerStyle={{marginTop: 5, marginLeft: 2}} // Adjust spacing as needed
-                  />
-                </View>
-              </View>
-            </View>
-            <Snackbar
-              className="bg-[#cbc9c9]"
-              visible={snackbarVisible}
-              onDismiss={() => setSnackbarVisible(false)}
-              duration={1000} // 1 seconds
-              action={{
-                label: 'go back',
-                textColor: 'black',
-                onPress: () => {
-                  setSnackbarVisible(false);
-                  handleBackPress(); // Call handleBackPress again to navigate back
-                },
-              }}>
-              <Text className="text-black">Press again to go back</Text>
-            </Snackbar>
+            </TouchableOpacity>
           </View>
+          <View className="gap-4">
+            <View className="flex-row items-center space-x-2 p-2 mt-1">
+              <View className="flex-row space-x-1">
+                <StarIcon size={22} color="yellow" />
+                <Text className="text-white">8.3</Text>
+              </View>
+              <Button className="bg-[#E6AD18] rounded-md">
+                <Text className="text-[#343333]">IMDB 7.5</Text>
+              </Button>
+            </View>
+
+            <View className="p-2 flex-row space-x-5 mt-1">
+              <Text
+                className="text-[#cbc9c9] font-light"
+                style={{fontSize: hp(1.8)}}>
+                {names}
+              </Text>
+              <Text
+                className="text-[#cbc9c9] font-light"
+                style={{fontSize: hp(1.8)}}>
+                {movies?.runtime} m
+              </Text>
+            </View>
+
+            <View className="p-3 space-y-12">
+              <View>
+                <Text
+                  className="text-[#cbc9c9]/80 font-bold  tracking-widest"
+                  style={{fontSize: hp(2.3)}}>
+                  Story Line
+                </Text>
+                <Text
+                  className="text-[#cbc9c9] font-extralight mt-2 tracking-widest text-sm text-justify leading-[30px]"
+                  style={{fontSize: hp(1.75)}}
+                  numberOfLines={5}
+                  ellipsizeMode="tail">
+                  {movies?.overview}
+                </Text>
+              </View>
+
+              <View className="pt-2">
+                <Text
+                  className="text-[#cbc9c9]/80 font-bold  tracking-widest"
+                  style={{fontSize: hp(2.3)}}>
+                  Star cast
+                </Text>
+                <FlatList
+                  horizontal
+                  data={cast}
+                  keyExtractor={item => item.id.toString()}
+                  renderItem={({item}) => <CastItem item={item} />}
+                  contentContainerStyle={{marginTop: 5, marginLeft: 2}} // Adjust spacing as needed
+                />
+              </View>
+            </View>
+          </View>
+
+          <Snackbar
+            style={styles.snackbar}
+            className="bg-[#cbc9c9]"
+            visible={snackbarVisible}
+            onDismiss={() => setSnackbarVisible(false)}
+            duration={3000} // 3 seconds
+            action={{
+              label: 'go back',
+              textColor: 'black',
+              onPress: () => {
+                setSnackbarVisible(false);
+                handleBackPress(); // Call handleBackPress again to navigate back
+              },
+            }}>
+            <Text className="text-black">Press again to go back</Text>
+          </Snackbar>
+
+          {/* </View> */}
         </ScrollView>
       )}
     </SafeAreaView>
@@ -437,5 +440,11 @@ const styles = StyleSheet.create({
   rating: {
     color: '#fff',
     fontSize: 14,
+  },
+  snackbar: {
+    position: 'absolute',
+    bottom: 0, // Fixes the snackbar to the bottom
+    left: 0,
+    right: 0,
   },
 });

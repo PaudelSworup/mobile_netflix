@@ -14,9 +14,9 @@ const MovieBanner = () => {
   const [videos, setVideos] = useState<any>(null);
 
   // Fetch banner movies
-  const bannerMovies = useQuery(['trending'], async () => trending_movies(), {
+  const bannerMovies = useQuery(['trending'], async () => trending_movies(1), {
     onSettled: data => {
-      if (data?.movies.length) {
+      if (data?.movies?.length) {
         const randomBanner =
           data.movies[Math.floor(Math.random() * data.movies.length)];
         setBanner(randomBanner);

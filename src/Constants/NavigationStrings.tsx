@@ -8,4 +8,5 @@ export default {
   DETAIL: 'MovieDetail',
   NOTIFICATION: 'NotificationScreen',
   LOADING: 'netflixloading',
+  EXPLORE_ALL: 'exploreall',
 };

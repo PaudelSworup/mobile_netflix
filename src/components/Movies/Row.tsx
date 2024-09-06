@@ -16,15 +16,6 @@ import Skeleton from '../../utils/Skeleton';
 const Row: React.FC<{title: string; movies?: any}> = ({title, movies}) => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Check if movies data is loaded
-    if (movies && movies.length > 0) {
-      setLoading(false);
-    }
-  }, [movies]);
-
   const MovieItem: React.FC<{item: moviesProps}> = React.memo(({item}) => (
     <View
       className="relative"
@@ -69,17 +60,25 @@ const Row: React.FC<{title: string; movies?: any}> = ({title, movies}) => {
 
   return (
     <View className="mt-3">
-      <View className="flex-row py-2 justify-between">
+      <View className="flex-row p-2 justify-between">
         <Text
           className="text-lg uppercase font-bold text-white tracking-wider"
           style={{fontSize: hp(2)}}>
           {title}
         </Text>
-        {/* <Text
-          className="font-light tracking-tight text-sm text-white"
-          style={{fontSize: hp(2)}}>
-          See All
-        </Text> */}
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(NavigationStrings.EXPLORE_ALL, {
+              title, // Pass the title of the movie category
+              movies, // Pass the movies array
+            });
+          }}>
+          <Text
+            className="font-extralight tracking-tight text-lg text-white"
+            style={{fontSize: hp(2)}}>
+            Explore all
+          </Text>
+        </TouchableOpacity>
       </View>
       {Object.values(movies).every((movies: any) => movies.length === 0) ? (
         <Skeleton />

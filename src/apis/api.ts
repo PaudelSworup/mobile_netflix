@@ -1,39 +1,51 @@
-let BASE_URL: string = 'https://movies-backend-alpha.vercel.app/api';
-// let BASE_URL: string = 'http://192.168.1.67:8000/api';
+// let BASE_URL: string = 'https://movies-backend-alpha.vercel.app/api';
+let BASE_URL: string = 'http://192.168.1.67:8000/api';
 
 //list of movies of different genres
-export const upcoming_movies = async () => {
-  const response = await fetch(`${BASE_URL}/upcoming`);
+export const upcoming_movies = async (page: any) => {
+  const response = await fetch(`${BASE_URL}/upcoming/${page}`);
   const movies = await response.json();
   return movies;
 };
 
-export const horror_movies = async () => {
-  const response = await fetch(`${BASE_URL}/horror`);
+export const horror_movies = async (page: any) => {
+  const response = await fetch(`${BASE_URL}/horror/${page}`);
   const movies = await response.json();
   return movies;
 };
 
-export const comedy_movies = async () => {
-  const response = await fetch(`${BASE_URL}/comedy`);
+export const comedy_movies = async (page: any) => {
+  const response = await fetch(`${BASE_URL}/comedy/${page}`);
   const movies = await response.json();
   return movies;
 };
 
-export const scifi_movies = async () => {
-  const response = await fetch(`${BASE_URL}/scifi`);
+export const scifi_movies = async (page: any) => {
+  const response = await fetch(`${BASE_URL}/scifi/${page}`);
   const movies = await response.json();
   return movies;
 };
 
-export const romance_movies = async () => {
-  const response = await fetch(`${BASE_URL}/animation`);
+export const animation_movies = async (page: any) => {
+  const response = await fetch(`${BASE_URL}/animation/${page}`);
   const movies = await response.json();
   return movies;
 };
 
-export const trending_movies = async () => {
-  const response = await fetch(`${BASE_URL}/trending`);
+export const romance_movies = async (page: any) => {
+  const response = await fetch(`${BASE_URL}/romance/${page}`);
+  const movies = await response.json();
+  return movies;
+};
+
+export const trending_movies = async (page: any) => {
+  const response = await fetch(`${BASE_URL}/trending/${page}`);
+  const movies = await response.json();
+  return movies;
+};
+
+export const western_movies = async (page: any) => {
+  const response = await fetch(`${BASE_URL}/western/${page}`);
   const movies = await response.json();
   return movies;
 };
