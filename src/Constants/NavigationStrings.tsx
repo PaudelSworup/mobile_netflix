@@ -9,4 +9,5 @@ export default {
   NOTIFICATION: 'NotificationScreen',
   LOADING: 'netflixloading',
   EXPLORE_ALL: 'exploreall',
+  PROFILE: 'profile',
 };

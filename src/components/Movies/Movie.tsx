@@ -7,6 +7,7 @@ import {
   Animated,
   Alert,
   BackHandler,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useCallback, useRef, useState} from 'react';
 import Row from './Row';
@@ -26,16 +27,13 @@ import {Searchbar} from 'react-native-paper';
 import {useAppSelector} from '../../store/store';
 import SearchResults from './searchResults';
 import {useFocusEffect} from '@react-navigation/native';
+import {navigate} from '../../apis/pushNotification/NavigationService';
+import NavigationStrings from '../../Constants/NavigationStrings';
 
 const Movie = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const {userInfo} = useAppSelector(state => state.auth);
   const scrollY = useRef(new Animated.Value(0)).current;
-
-  //utility func to shuffle the list of movies
-  const shuffleArray = (array: any) => {
-    return array.sort(() => Math.random() - 0.5);
-  };
 
   //fetching the list of movies
   const [moviesData, setMoviesData] = useState({
@@ -50,10 +48,9 @@ const Movie = () => {
   const fetchMovies = (key: any, apiCall: any) =>
     useQuery(key, () => apiCall(1), {
       onSettled: (data: any) => {
-        // console.log(data?.movies);
-        const shuffledMovies = shuffleArray(data?.movies || []);
-        setMoviesData(prev => ({...prev, [key]: data?.movies}));
-        // setMoviesData(prev => ({...prev, [key]: shuffledMovies}));
+        if (data && data?.movies) {
+          setMoviesData(prev => ({...prev, [key]: data?.movies}));
+        }
       },
     });
 
@@ -70,7 +67,7 @@ const Movie = () => {
     extrapolate: 'clamp',
   });
 
-  const filteredMovies = Object.values(moviesData)
+  const filteredMovies = Object?.values(moviesData)
     .flat()
     .filter((movie: any) =>
       movie?.title?.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -117,10 +114,7 @@ const Movie = () => {
       // backgroundColor="black"
       // barStyle="light-content"
       />
-      {moviesData &&
-      Object?.values(moviesData).every(
-        (movies: any) => movies?.length === 0,
-      ) ? (
+      {Object?.values(moviesData).every((movies: any) => movies?.length < 0) ? (
         <SkeletonLoading />
       ) : (
         <>
@@ -137,14 +131,15 @@ const Movie = () => {
                 What to Watch?
               </Text>
             </View>
-            <View>
+            <TouchableOpacity
+              onPress={() => navigate(NavigationStrings.PROFILE)}>
               <Image
                 source={{
                   uri: 'https://img.freepik.com/premium-vector/beard-man-logo_671039-606.jpg',
                 }}
                 style={{width: 50, height: 50, borderRadius: 50}}
               />
-            </View>
+            </TouchableOpacity>
           </Animated.View>
 
           <View className="py-5 px-5">

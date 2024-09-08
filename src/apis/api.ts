@@ -1,5 +1,6 @@
-let BASE_URL: string = 'https://movies-backend-alpha.vercel.app/api';
-// let BASE_URL: string = 'http://192.168.1.67:8000/api';
+// let BASE_URL: string = 'https://movies-backend-alpha.vercel.app/api';
+let BASE_URL: string = 'http://192.168.1.67:8000/api';
+// let BASE_URL: string = 'http://192.168.1.10:8000/api';
 
 //list of movies of different genres
 export const upcoming_movies = async (page: any) => {
@@ -101,4 +102,42 @@ export const signIn = async (payload: any) => {
     .catch(error => {
       console.error('Error:', error);
     });
+};
+
+export const recordTrailerWatch = async (payload: any) => {
+  return fetch(`${BASE_URL}/recordtrailer`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+    .then(response => response.json())
+    .catch(error => {
+      console.error('Error:', error);
+    });
+};
+
+export const trailer_movies = async (id: any) => {
+  const response = await fetch(`${BASE_URL}/gettrailer/${id}`);
+  const movies = await response.json();
+  return movies;
+};
+
+export const uplaodImage = async (payload: any, id: any) => {
+  return fetch(`${BASE_URL}/profile/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    body: payload,
+  })
+    .then(response => response.json())
+    .catch(error => {});
+};
+
+export const getProfile = async (id: any) => {
+  const response = await fetch(`${BASE_URL}/profile/${id}`);
+  const profile = await response.json();
+  return profile;
 };

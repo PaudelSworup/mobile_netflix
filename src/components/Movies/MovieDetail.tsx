@@ -12,7 +12,7 @@ import {
   StyleSheet,
   useWindowDimensions,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {
   ParamListBase,
   RouteProp,
@@ -25,20 +25,19 @@ import {
   movies_cast,
   movies_videos,
   recommended_movies,
+  recordTrailerWatch,
   single_movies,
 } from '../../apis/api';
 
-import {
-  ArrowsPointingOutIcon,
-  PlayIcon,
-  XMarkIcon,
-} from 'react-native-heroicons/solid';
+import {PlayIcon} from 'react-native-heroicons/solid';
 // import Video from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
-import {ActivityIndicator, Button, Snackbar} from 'react-native-paper';
-import {overFlow} from '../../utils/utils';
+import {Button, Snackbar} from 'react-native-paper';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import YoutubePlayer from 'react-native-youtube-iframe';
+import YoutubePlayer, {
+  YoutubeIframeRef,
+  PLAYER_STATES,
+} from 'react-native-youtube-iframe';
 import {StarIcon} from 'react-native-heroicons/solid';
 import {
   heightPercentageToDP as hp,
@@ -47,15 +46,14 @@ import {
 import {IMAGE_URL} from '../../../config';
 import NavigationStrings from '../../Constants/NavigationStrings';
 import LottieView from 'lottie-react-native';
+import {useAppSelector} from '../../store/store';
 
 type RootStackParamList = {
   movieDetailID: {movieId?: number};
 };
 const MovieDetail = () => {
   const {height, width} = useWindowDimensions();
-
   const orientation = width > height ? 'landscape' : 'portrait';
-  console.log(orientation);
   const [fullScreen, setFullScreen] = useState<boolean>(false);
   const [movies, setMovies] = useState<any>();
   const [showVideo, setShowVideo] = useState(false);
@@ -65,17 +63,22 @@ const MovieDetail = () => {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [backPressedOnce, setBackPressedOnce] = useState(false);
   const [recommended, setRecommended] = useState<any>();
+  const [timeTracked, setTimeTracked] = useState(false);
 
   const route = useRoute<RouteProp<RootStackParamList, 'movieDetailID'>>();
   const {movieId} = route.params;
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
+  const {userInfo} = useAppSelector(state => state.auth);
+
+  const playerRef = useRef<YoutubeIframeRef | null>(null);
+
   const singleMovies = useQuery(
     ['movieDetails', movieId],
     async () => single_movies(movieId as number),
     {
-      onSettled: data => setMovies(data?.movies),
+      onSuccess: data => setMovies(data?.movies),
     },
   );
 
@@ -103,6 +106,8 @@ const MovieDetail = () => {
       // enabled: !movieId,
     },
   );
+
+  // console.log('videos', videos);
 
   const getCasts = useQuery(
     ['movieCasts', movieId],
@@ -152,12 +157,43 @@ const MovieDetail = () => {
     }, [handleBackPress]),
   );
 
-  const onStateChange = useCallback((state: any) => {
-    if (state === 'ended') {
-      setPlaying(false);
-      Alert.alert('video has finished playing!');
-    }
-  }, []);
+  const onStateChange = useCallback(
+    (state: any) => {
+      if (state === PLAYER_STATES.PLAYING && !timeTracked) {
+        trackTime(
+          movies?.original_title,
+          movies?.backdrop_path,
+          userInfo?._id,
+          movies.id,
+        );
+      }
+      if (state === 'ended') {
+        setPlaying(false);
+        Alert.alert(` video has finished playing!`);
+      }
+    },
+    [movies, timeTracked],
+  );
+
+  const trackTime = (
+    title: string,
+    image: string,
+    userId: any,
+    movieId: any,
+  ) => {
+    const interval = setInterval(() => {
+      if (playerRef.current) {
+        playerRef.current.getCurrentTime().then(currentTime => {
+          if (currentTime >= 15 && !timeTracked) {
+            console.log('15 seconds completed');
+            recordTrailerWatch({trailerName: title, image, userId, movieId});
+            setTimeTracked(true); // Set to true to avoid further logging.
+            clearInterval(interval); // Stop the interval once 15 seconds are logged.
+          }
+        });
+      }
+    }, 1000); // Check every second
+  };
 
   //cast item for flat list
   const CastItem = React.memo(({item}: any) => (
@@ -212,7 +248,12 @@ const MovieDetail = () => {
     );
   };
 
-  if (moviesVideos?.isLoading) {
+  if (
+    singleMovies.isLoading ||
+    recommendedMovies.isLoading ||
+    moviesVideos.isLoading ||
+    getCasts.isLoading
+  ) {
     return (
       <View
         style={{
@@ -250,6 +291,7 @@ const MovieDetail = () => {
               {orientation === 'landscape' ? (
                 <YoutubePlayer
                   height={hp(80)}
+                  ref={playerRef}
                   play={playing}
                   videoId={videos?.trailer?.youtube_video_id}
                   onFullScreenChange={handleOrientationChange}
@@ -258,6 +300,7 @@ const MovieDetail = () => {
               ) : (
                 <YoutubePlayer
                   height={hp(40)}
+                  ref={playerRef}
                   play={playing}
                   videoId={videos?.trailer?.youtube_video_id}
                   onFullScreenChange={handleOrientationChange}

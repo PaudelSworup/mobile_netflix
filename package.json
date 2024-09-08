@@ -20,6 +20,7 @@
     "nativewind": "^2.0.11",
     "react": "18.3.1",
     "react-native": "0.75.1",
+    "react-native-document-picker": "^9.3.1",
     "react-native-heroicons": "^4.0.0",
     "react-native-orientation-locker": "^1.7.0",
     "react-native-paper": "^5.12.5",

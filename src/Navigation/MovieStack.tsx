@@ -6,6 +6,7 @@ import {
   MovieDetail,
   MovieNotification,
   Netflix,
+  Profile,
   SignIn,
   SignUp,
 } from '../Screens';
@@ -29,6 +30,16 @@ const MovieStack = () => {
       <Stack.Screen
         name={NavigationStrings.EXPLORE_ALL}
         component={ExploreAll}
+      />
+      <Stack.Screen
+        name={NavigationStrings.PROFILE}
+        component={Profile}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: 'black'},
+          headerTintColor: 'white',
+          headerTitle: '',
+        }}
       />
     </Stack.Navigator>
   );

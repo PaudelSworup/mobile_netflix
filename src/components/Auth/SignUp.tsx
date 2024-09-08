@@ -58,6 +58,7 @@ const SignUp = () => {
   const handleSignUp = async () => {
     console.log(form.password, form.verify_Password);
     let fcm_token = await AsyncStorage.getItem('fcm_token');
+    console.log(fcm_token);
     if (form.password !== form.verify_Password) {
       // Handle password mismatch, e.g., show an error message
       ToastAndroid.show('password do not match !', ToastAndroid.SHORT);
