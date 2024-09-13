@@ -54,6 +54,8 @@ const UserProfile = () => {
     },
   );
 
+  console.log(profile);
+
   const uploadProfile = async () => {
     pickImage().then(profileImage => {
       if (profileImage === null) return;

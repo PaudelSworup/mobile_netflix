@@ -105,6 +105,7 @@ export const signIn = async (payload: any) => {
 };
 
 export const recordTrailerWatch = async (payload: any) => {
+  console.log(payload);
   return fetch(`${BASE_URL}/recordtrailer`, {
     method: 'POST',
     headers: {

@@ -10,4 +10,5 @@ export default {
   LOADING: 'netflixloading',
   EXPLORE_ALL: 'exploreall',
   PROFILE: 'profile',
+  dropdown: 'dropdown',
 };

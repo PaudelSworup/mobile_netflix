@@ -11,13 +11,18 @@ import {
   SignUp,
 } from '../Screens';
 import NavigationStrings from '../Constants/NavigationStrings';
+import DropdownMenu from '../utils/Dropdown';
 
 const Stack = createNativeStackNavigator();
 const MovieStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName={NavigationStrings.LOADING}
+      initialRouteName={NavigationStrings.dropdown}
       screenOptions={{headerShown: false}}>
+      <Stack.Screen
+        name={NavigationStrings.dropdown}
+        component={DropdownMenu}
+      />
       <Stack.Screen name={NavigationStrings.REGISTER} component={SignUp} />
       <Stack.Screen name={NavigationStrings.LOGIN} component={SignIn} />
       <Stack.Screen name={NavigationStrings.LOADING} component={Netflix} />
